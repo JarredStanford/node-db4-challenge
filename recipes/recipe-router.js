@@ -40,4 +40,16 @@ router.get('/:id/instructions', async (req, res) => {
     }
 })
 
+router.get('/ingredients/:id/recipes', async (req, res) => {
+    try {
+        const { id } = req.params
+        const recipeList = await Recipes.getCommonRecipes(id)
+        res.status(200).json(recipeList)
+    } catch (err) {
+        res.status(500).json({
+            message: "There was an error retrieving the list."
+        })
+    }
+})
+
 module.exports = router
