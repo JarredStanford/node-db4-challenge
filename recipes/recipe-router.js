@@ -20,11 +20,22 @@ router.get('/:id/shoppinglist', async (req, res) => {
         const { id } = req.params
         console.log(id)
         const list = await Recipes.getShoppingList(id);
-        console.log(list)
         res.status(200).json(list)
     } catch (err) {
         res.status(500).json({
             message: "There was an error creating the shopping list."
+        })
+    }
+})
+
+router.get('/:id/instructions', async (req, res) => {
+    try {
+        const { id } = req.params
+        const steps = await Recipes.getInstructions(id)
+        res.status(200).json(steps)
+    } catch (err) {
+        res.status(500).json({
+            message: "There was an error getting the instructions."
         })
     }
 })

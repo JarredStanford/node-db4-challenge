@@ -2,7 +2,8 @@ const db = require('../data/db-config.js')
 
 module.exports = {
     getRecipes,
-    getShoppingList
+    getShoppingList,
+    getInstructions
 }
 
 function getRecipes() {
@@ -12,9 +13,15 @@ function getRecipes() {
 function getShoppingList(recipe_id) {
     return db('recipes as r')
         .innerJoin('recipe_details as rd', 'r.id', 'rd.recipe_id')
-        .innerJoin('ingredients as i')
+        .innerJoin('ingredients as i', 'rd.ingredient_id', 'i.id')
         .where({ recipe_id })
-        .select('rd.ingredient_id', 'rd.ingredient_quantity')
+        .select('rd.ingredient_quantity as Quantity', 'i.ingredient_name as Ingredient')
+}
+
+function getInstructions(recipe_id) {
+    return db('recipes as r')
+        .innerJoin('steps as s', 'r.id', 's.recipe_id')
+        .where({ recipe_id })
 }
 /*getRecipes(): should return a list of all recipes in the database.
 getShoppingList(recipe_id): should return a list of all ingredients and quantities for a given recipe
